@@ -1,0 +1,1 @@
+MODEL_PATH = "runs/detect/cookie_yolov8m2/weights/best.pt" 

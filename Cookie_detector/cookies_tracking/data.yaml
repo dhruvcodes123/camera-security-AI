@@ -1,0 +1,7 @@
+train: Cookie Detection/train/images
+val: Cookie Detection/test/images
+
+
+nc: 2
+names: ['black_cookie', 'white_cookie']
+
