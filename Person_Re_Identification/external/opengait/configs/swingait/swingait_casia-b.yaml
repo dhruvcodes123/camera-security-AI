@@ -1,0 +1,57 @@
+data_cfg:
+  dataset_name: CASIA-B
+  dataset_root: .
+  dataset_partition: external/opengait/partition.json
+  cache: ""
+  num_workers: 1
+
+model_cfg:
+  model: SwinGait
+  Backbone:
+    mode: p3d
+    in_channels: 1
+    layers:
+      - 1
+      - 1
+      - 2
+      - 2
+    channels:
+      - 64
+      - 128
+  bin_num: 
+    - 15
+  SeparateBNNecks:
+    in_channels: 256
+    class_num: 74  # CASIA-B has 74 subjects
+    parts_num: 16
+
+engine_cfg:
+  restore_hint: 0
+  restore_ckpt_strict: false
+  save_name: SwinGait_CASIA-B
+
+trainer_cfg:
+  T_max_iter: 10000
+  transform: []
+  sampler:
+    type: "CommonSampler"
+    sample_type: "fixed_ordered"
+    batch_size: 1
+    batch_shuffle: false
+    frames_num_fixed: 30
+    frames_skip_num: 4
+
+evaluator_cfg:
+  enable_float16: false
+  save_name: SwinGait_CASIA-B
+  transform: []
+  restore_hint: 0
+  restore_ckpt_strict: false
+  optimizer_reset: true
+  scheduler_reset: true
+  with_test: false
+  sampler:
+    type: "CommonSampler"
+    sample_type: "all_ordered"
+    batch_size: 1
+    batch_shuffle: false 

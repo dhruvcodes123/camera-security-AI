@@ -1,0 +1,147 @@
+# ==============================================================================
+# PERSON RE-IDENTIFICATION SYSTEM - COMPLETE REQUIREMENTS
+# ==============================================================================
+# This file contains ALL dependencies needed for the Person Re-Identification system
+
+# Core Computer Vision and Image Processing
+opencv-contrib-python>=4.10.0
+opencv-python>=4.10.0
+opencv-python-headless>=4.10.0
+Pillow>=10.0.0
+
+# Deep Learning Frameworks
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+
+# Object Detection and Tracking
+ultralytics>=8.0.0
+ultralytics-thop>=2.0.0
+
+# Face Recognition and Analysis
+insightface>=0.7.3
+
+# AI Model Utilities
+timm>=1.0.0
+einops>=0.8.0
+thop>=0.1.0
+onnx>=1.15.0
+onnx-simplifier>=0.4.33
+onnxruntime>=1.16.0
+onnxruntime-gpu>=1.16.0
+
+# Gait Recognition and OpenCLIP
+open-clip-torch>=2.32.0
+clip>=0.2.0
+ftfy>=6.1.1
+regex>=2023.6.3
+
+# Machine Learning and Data Science
+numpy>=1.24.0
+scikit-learn>=1.3.0
+scipy>=1.11.0
+scikit-image>=0.21.0
+
+# Vector Database and Similarity Search
+faiss-cpu>=1.7.4
+
+# Configuration and Data Handling
+PyYAML>=6.0
+omegaconf>=2.3.0
+easydict>=1.13
+
+# Data Processing and Analysis
+pandas>=2.0.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Database (sqlite3 is built-in to Python)
+
+# Utilities and Progress Tracking
+tqdm>=4.65.0
+requests>=2.31.0
+
+# Parallel Processing and Threading
+concurrent-futures; python_version < "3.2"  # Built-in for Python 3.2+
+
+# Model Optimization and Export
+prettytable>=3.8.0
+
+# Development and Code Quality
+ipython>=8.14.0
+yapf>=0.40.0
+flake8>=6.0.0
+isort>=5.12.0
+
+# Testing
+pytest>=7.4.0
+
+# Additional Dependencies for External Modules
+packaging>=23.0
+cffi>=1.15.0
+
+# Image Augmentation (used by some dependencies)
+albumentations>=1.3.0
+albucore>=0.0.20
+
+# System Monitoring
+psutil>=5.9.0
+
+# Additional Dependencies for RVM and Gait Analysis
+# These are specific to the RobustVideoMatting and OpenGait modules
+# Note: Some dependencies may be installed via pip install -e for local modules
+
+# ==============================================================================
+# EXTERNAL DEPENDENCIES (Installed separately)
+# ==============================================================================
+
+# These dependencies are installed separately or are part of the system:
+
+# 1. YOLOv8 Models (Downloaded automatically by ultralytics)
+# - yolov8n.pt (6.2MB) - Person detection
+# - yolov8m.pt (50MB) - High-accuracy person detection
+# - yolov8n-pose.pt (6.5MB) - Pose estimation
+# - yolov8m-pose.pt (51MB) - High-accuracy pose estimation
+
+# 2. SwinGait Model (Downloaded manually)
+# - models/gait/swingait_casia-b.pt (9.0B placeholder)
+# - models/gait/swingait_pretrained.pth (107MB actual model)
+
+# 3. RVM Model (Downloaded manually)
+# - RobustVideoMatting/pretrained/rvm_mobilenetv3.pth (15MB)
+
+# 4. InsightFace Models (Downloaded automatically)
+# - ~/.insightface/models/buffalo_l/ (Face recognition models)
+
+# 5. Shoe Detection Models (YOLOv8 models)
+# - Uses same YOLOv8 models as person detection
+
+# ==============================================================================
+# SYSTEM REQUIREMENTS
+# ==============================================================================
+
+# Python Version: 3.8+
+# CUDA Support: 11.8+ (for GPU acceleration)
+# RAM: 8GB+ (16GB recommended)
+# GPU: 4GB+ VRAM (8GB+ recommended)
+# Storage: 10GB+ free space
+
+# ==============================================================================
+# INSTALLATION NOTES
+# ==============================================================================
+
+# 1. Create virtual environment:
+#    python -m venv .venv
+#    source .venv/bin/activate  # Linux/Mac
+#    .venv\Scripts\activate     # Windows
+
+# 2. Install dependencies:
+#    pip install -r requirements.txt
+
+# 3. Download models (if not already present):
+#    - YOLOv8 models are downloaded automatically
+#    - SwinGait models need to be downloaded manually
+#    - RVM models need to be downloaded manually
+
+# 4. Verify installation:
+#    python verify_installation.py

@@ -1,0 +1,6 @@
+model_cfg:
+  channels: [32, 64, 128, 256]
+  class_num: 74  # CASIA-B dataset has 74 subjects
+  in_c: 1  # Input channels (grayscale silhouettes)
+  input_size: [64, 44]  # Standard silhouette size
+  hidden_dims: [256, 256]  # Hidden dimensions for the model 

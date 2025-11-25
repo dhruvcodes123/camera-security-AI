@@ -1,0 +1,125 @@
+# ==============================================================================
+# DOCKER IGNORE FILE
+# ==============================================================================
+# Exclude unnecessary files from Docker build context
+
+# Git and version control
+.git
+.gitignore
+.gitattributes
+
+# Python cache and virtual environments
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv
+venv/
+env/
+ENV/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+logs/
+temp/
+tmp/
+
+# Data files (will be mounted as volumes)
+data/processed_output/
+db/*.sqlite
+db/vector_db/
+*.db
+*.sqlite
+
+# Large model files (will be downloaded during build)
+models/gait/*.pth
+RobustVideoMatting/pretrained/*.pth
+*.pt
+*.pth
+
+# Test files
+test_*.mp4
+test_*.db
+test_*.csv
+test_*.pkl
+
+# Documentation (not needed in container)
+*.md
+docs/
+documentation/
+
+# Development files
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Jupyter notebooks
+*.ipynb
+.ipynb_checkpoints/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Archive files
+*.zip
+*.tar
+*.gz
+*.rar
+
+# Docker files (except Dockerfile)
+docker-compose*.yml
+.dockerignore
+
+# CI/CD files
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Node.js (if any)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Profiling and debugging
+*.prof
+*.pstats
+*.pyprof 

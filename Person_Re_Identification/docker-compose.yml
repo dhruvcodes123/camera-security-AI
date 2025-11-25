@@ -1,0 +1,207 @@
+# ==============================================================================
+# PERSON RE-IDENTIFICATION SYSTEM - DOCKER COMPOSE
+# ==============================================================================
+# Easy deployment with GPU support and volume persistence
+
+version: '3.8'
+
+services:
+  person-reid-system:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: person-reid-system
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - CUDA_VISIBLE_DEVICES=0
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Data persistence
+      - ./data:/app/data
+      - ./db:/app/db
+      - ./models:/app/models
+      # Input videos
+      - ./data/input_videos:/app/data/input_videos:ro
+      # Output directory
+      - ./data/processed_output:/app/data/processed_output
+      # Database persistence
+      - ./db:/app/db
+      # Model files
+      - ./models:/app/models:ro
+      # RobustVideoMatting models
+      - ./RobustVideoMatting/pretrained:/app/RobustVideoMatting/pretrained:ro
+    ports:
+      # Uncomment if you want to expose a web interface
+      # - "8000:8000"
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: ["python", "scripts/process_feed_optimized.py", "--help"]
+
+  # Development service (optional)
+  person-reid-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: person-reid-dev
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - CUDA_VISIBLE_DEVICES=0
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Full project directory for development
+      - .:/app
+      # Data directories
+      - ./data:/app/data
+      - ./db:/app/db
+      - ./models:/app/models
+    ports:
+      # Jupyter notebook port
+      - "8888:8888"
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: ["bash"]
+    profiles:
+      - development
+
+  # GPU monitoring service (optional)
+  nvidia-ml-py:
+    image: nvidia/cuda:11.8-base-ubuntu20.04
+    container_name: gpu-monitor
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: ["nvidia-smi", "-l", "1"]
+    profiles:
+      - monitoring
+
+# ==============================================================================
+# NETWORKS
+# ==============================================================================
+networks:
+  default:
+    name: person-reid-network
+
+# ==============================================================================
+# VOLUMES
+# ==============================================================================
+volumes:
+  data:
+    driver: local
+  db:
+    driver: local
+  models:
+    driver: local
+
+# ==============================================================================
+# USAGE INSTRUCTIONS
+# ==============================================================================
+#
+# 1. Build and start the production system:
+#    docker-compose up --build
+#
+# 2. Start in detached mode:
+#    docker-compose up -d
+#
+# 3. Start development environment:
+#    docker-compose --profile development up person-reid-dev
+#
+# 4. Start with GPU monitoring:
+#    docker-compose --profile monitoring up
+#
+# 5. Run specific command:
+#    docker-compose run person-reid-system python scripts/process_feed_optimized.py \
+#      --video_path data/input_videos/video.mp4 \
+#      --output_path data/processed_output/output.mp4
+#
+# 6. Access development environment:
+#    docker-compose run --service-ports person-reid-dev bash
+#
+# 7. Stop all services:
+#    docker-compose down
+#
+# 8. Stop and remove volumes:
+#    docker-compose down -v
+#
+# ==============================================================================
+# ENVIRONMENT VARIABLES
+# ==============================================================================
+#
+# You can override these by creating a .env file:
+#
+# CUDA_VISIBLE_DEVICES=0
+# PYTHONPATH=/app
+# PYTHONUNBUFFERED=1
+# NVIDIA_VISIBLE_DEVICES=all
+#
+# ==============================================================================
+# VOLUME MOUNTS EXPLANATION
+# ==============================================================================
+#
+# ./data:/app/data
+#   - Input videos and processed outputs
+#   - Read-write access for processing results
+#
+# ./db:/app/db
+#   - Database files and vector indices
+#   - Persistent storage across container restarts
+#
+# ./models:/app/models
+#   - Pre-trained model files
+#   - Read-only access to prevent corruption
+#
+# ./RobustVideoMatting/pretrained:/app/RobustVideoMatting/pretrained
+#   - RVM model files
+#   - Read-only access to prevent corruption
+#
+# ==============================================================================
+# GPU REQUIREMENTS
+# ==============================================================================
+#
+# The system requires NVIDIA GPU with CUDA support:
+# - Minimum: 4GB VRAM
+# - Recommended: 8GB+ VRAM
+# - CUDA version: 11.8+
+# - Driver version: 450.80.02+
+#
+# ==============================================================================
+# TROUBLESHOOTING
+# ==============================================================================
+#
+# 1. GPU not detected:
+#    - Install NVIDIA Docker runtime
+#    - Check nvidia-smi output
+#    - Verify CUDA installation
+#
+# 2. Permission issues:
+#    - Check file permissions on mounted volumes
+#    - Run with appropriate user permissions
+#
+# 3. Memory issues:
+#    - Reduce batch size in configuration
+#    - Monitor GPU memory usage
+#    - Use smaller models if needed
+#
+# 4. Performance issues:
+#    - Check GPU utilization
+#    - Monitor system resources
+#    - Optimize video resolution 
